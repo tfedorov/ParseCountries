@@ -1,6 +1,5 @@
 package com.epam.spark
 
-import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 
 object HelloSpark {
@@ -20,14 +19,10 @@ object HelloSpark {
     println("Sum of population: " + engine.summary(population.collectAsList()))
 
 
-//    val test = df.select("Region", "PopDensity").col("Region").getItem(5).expr
-
-
-//    val region = df.select("Region").collectAsList()
-//    val popDensity = df.select( "PopDensity").collectAsList()
-
-//    println(test)
-
+    //Show Population Density at region
+    val regionAndPopulation = df.select("Region", "PopDensity")
+    engine.sumToMap(regionAndPopulation.collectAsList())
+      .foreach(obj => println(obj))
   }
 
 }
