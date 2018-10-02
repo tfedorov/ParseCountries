@@ -20,7 +20,7 @@ class Engine {
     val map = new mutable.HashMap[String, Double]
 
     list.forEach(obj => {
-      val key: String = obj.getString(0)
+      val key: String = obj.getString(0).trim()
       val doubleValue: Double = toDouble(obj.getString(1))
 
       map.put(
