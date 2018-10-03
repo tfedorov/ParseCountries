@@ -10,7 +10,6 @@ object HelloSparkRDD2 {
     val conf: SparkConf = new SparkConf().setAppName("simpleReading").setMaster("local[*]")
     val sc: SparkContext = new SparkContext(conf)
 
-
     val distFile: RDD[String] = sc.textFile("src\\main\\scala\\resourses\\countries_of_the_world.csv")
 
     val value: RDD[String] = distFile.map(_.split(",")(2))
@@ -18,6 +17,11 @@ object HelloSparkRDD2 {
    val rdd = value.map(_.toLong)
     println("Population total: " + rdd.take(rdd.count().toInt).sum)
 
+    val unit: RDD[String] = distFile.map(elem => elem.split(",\""))
+      .collect{case x if (x.length>1) => x(1)
+        .stripSuffix("\"")}
+    val rdd2 = unit.map(_.replace(",",".").toDouble)
+    println("Pop. Density total: " + rdd2.take(rdd.count().toInt).sum)
   }
 
 }
