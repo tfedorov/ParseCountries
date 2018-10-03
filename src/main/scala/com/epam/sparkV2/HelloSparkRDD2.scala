@@ -16,7 +16,7 @@ object HelloSparkRDD2 {
     val value: RDD[String] = distFile.map(_.split(",")(2))
       .filter(str => !str.contains("Population"))
    val rdd = value.map(_.toLong)
-    println(rdd.take(rdd.count().toInt).sum)
+    println("Population total: " + rdd.take(rdd.count().toInt).sum)
 
   }
 
