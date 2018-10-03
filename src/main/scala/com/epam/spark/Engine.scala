@@ -21,12 +21,13 @@ class Engine {
 
     list.forEach(obj => {
       val key: String = obj.getString(0).trim()
+
       val doubleValue: Double = toDouble(obj.getString(1))
+      val population: Double = if (map.contains(key)) map(key) + doubleValue else doubleValue
 
       map.put(
         key,
-        if (map.contains(key)) map(key) + doubleValue else doubleValue
-      )
+        population)
     })
 
     return map

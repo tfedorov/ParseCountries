@@ -1,6 +1,6 @@
 package com.epam.spark
 
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object HelloSpark {
   def main(args: Array[String]): Unit = {
@@ -15,14 +15,15 @@ object HelloSpark {
     val engine = new Engine()
 
     //Show to console sum of population
-    val population = df.select("Population")
-    println("Sum of population: " + engine.summary(population.collectAsList()))
+    var sum: Long = 0
+    df.select("Population").foreach(obj => sum += obj.getInt(0))
+    println("Sum of population: " + sum)
 
 
-    //Show Population Density at region
-    val regionAndPopulation = df.select("Region", "PopDensity")
+ /*   //Show Population Density at region
+    val regionAndPopulation: DataFrame = df.select("Region", "PopDensity")
     engine.sumToMap(regionAndPopulation.collectAsList())
-      .foreach(obj => println(obj))
+      .foreach(obj => println(obj))*/
   }
 
 }
