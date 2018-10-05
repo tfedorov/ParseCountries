@@ -18,31 +18,36 @@ object HelloSparkRDDV2 {
 
 
     //Show to console sum of population
-    val population: RDD[String] = csvFile.map(_(populationIndex)).filter(str => !str.contains("Population"))
+    val population: RDD[String] = csvFile.map(_ (populationIndex)).filter(str => !str.contains("Population"))
     val popSum: RDD[Long] = population.map(_.toLong)
     println("Population total: " + popSum.sum.toLong)
 
 
     //Show Population Density at region
-    val region: RDD[String] = csvFile.map(_(regionIndex)).filter(str => !str.contains("Region"))
-    val popDensityInteger: RDD[String] = csvFile.map(_(3)).filter(str => !str.contains("Coastline (coast/area ratio)"))
-    val popDensityFractional: RDD[String] = csvFile.map(_(popDensityFractionalIndex)).filter(str => !str.contains("Net migration"))
+    val region: RDD[String] = csvFile.map(_ (regionIndex)).filter(str => !str.contains("Region"))
+    val popDensityInteger: RDD[String] = csvFile.map(_ (popDensityIntegerIndex)).filter(str => !str.contains("PopDensity")).map(_ stripSuffix "\"")
+    val popDensityFractional: RDD[String] = csvFile.map(_ (popDensityFractionalIndex)).filter(str => !str.contains("Coastline (coast/area ratio)")).map(_ stripSuffix "\"")
 
-    println("                     ")
-//    region.foreach(println)
-    println("                     ")
-    popDensityInteger.foreach(println)
-    println("                     ")
-//    popDensityFractional.foreach(println)
-//    println("                     ")
+    //228 = CSV.COUNT()
+    for (i <- 0 to 228) {
+      val integer: Array[String] = popDensityInteger.take(i.toInt)
+      val fraction: Array[String] = popDensityInteger.take(i.toInt)
+
+      val popDensity: String = integer(1) + fraction(1)
+      println(popDensity)
+    }
+
+    //    region.foreach(println)
+    //    popDensityInteger.foreach(println)
+    //    popDensityFractional.foreach(println)
 
 
-//    val popDensity: RDD[String] = distFile.map(elem => elem.split(",\""|))
-//      .collect { case x if (x.length > 1) => x(1)
-//        .stripSuffix("\"")
-//      }
-//    val popDensityDouble: RDD[Double] = popDensity.map(_.replace(",", ".").toDouble)
-//    println("Pop. Density total: " + popDensityDouble.sum)
+    //    val popDensity: RDD[String] = distFile.map(elem => elem.split(",\""|))
+    //      .collect { case x if (x.length > 1) => x(1)
+    //        .stripSuffix("\"")
+    //      }
+    //    val popDensityDouble: RDD[Double] = popDensity.map(_.replace(",", ".").toDouble)
+    //    println("Pop. Density total: " + popDensityDouble.sum)
   }
 
 }
