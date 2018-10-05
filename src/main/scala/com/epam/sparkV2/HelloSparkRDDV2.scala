@@ -12,19 +12,32 @@ object HelloSparkRDDV2 {
     val distFile: RDD[String] = sc.textFile("src\\main\\scala\\resourses\\countries_of_the_world.csv")
     val csvFile: RDD[Array[String]] = distFile.map(_.split(","))
     val populationIndex: Int = 2
+    val regionIndex: Int = 1
     val popDensityIntegerIndex: Int = 4
     val popDensityFractionalIndex: Int = 5
 
 
-    val population: RDD[String] = csvFile.map(_ (populationIndex)).filter(str => !str.contains("Population"))
+    //Show to console sum of population
+    val population: RDD[String] = csvFile.map(_(populationIndex)).filter(str => !str.contains("Population"))
     val popSum: RDD[Long] = population.map(_.toLong)
     println("Population total: " + popSum.sum.toLong)
 
 
-    val popDensityInteger: RDD[String] = csvFile.map(_(popDensityIntegerIndex)).filter(str => !str.contains("Pop.Density"))
-    val popDensityFractional: RDD[String] = csvFile.map(_(popDensityFractionalIndex)).filter(str => !str.contains(""))
+    //Show Population Density at region
+    val region: RDD[String] = csvFile.map(_(regionIndex)).filter(str => !str.contains("Region"))
+    val popDensityInteger: RDD[String] = csvFile.map(_(3)).filter(str => !str.contains("Coastline (coast/area ratio)"))
+    val popDensityFractional: RDD[String] = csvFile.map(_(popDensityFractionalIndex)).filter(str => !str.contains("Net migration"))
 
-//    val popDensity: RDD[String] = distFile.map(elem => elem.split(",\""))
+    println("                     ")
+//    region.foreach(println)
+    println("                     ")
+    popDensityInteger.foreach(println)
+    println("                     ")
+//    popDensityFractional.foreach(println)
+//    println("                     ")
+
+
+//    val popDensity: RDD[String] = distFile.map(elem => elem.split(",\""|))
 //      .collect { case x if (x.length > 1) => x(1)
 //        .stripSuffix("\"")
 //      }
