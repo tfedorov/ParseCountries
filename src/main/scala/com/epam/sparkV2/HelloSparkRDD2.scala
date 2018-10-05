@@ -12,16 +12,16 @@ object HelloSparkRDD2 {
 
     val distFile: RDD[String] = sc.textFile("src\\main\\scala\\resourses\\countries_of_the_world.csv")
 
-    val value: RDD[String] = distFile.map(_.split(",")(2))
+    val population: RDD[String] = distFile.map(_.split(",")(2))
       .filter(str => !str.contains("Population"))
-   val rdd = value.map(_.toLong)
-    println("Population total: " + rdd.take(rdd.count().toInt).sum)
+   val popSum: RDD[Long] = population.map(_.toLong)
+    println("Population total: " + popSum.sum.toLong)
 
-    val unit: RDD[String] = distFile.map(elem => elem.split(",\""))
+    val popDensity: RDD[String] = distFile.map(elem => elem.split(",\""))
       .collect{case x if (x.length>1) => x(1)
         .stripSuffix("\"")}
-    val rdd2 = unit.map(_.replace(",",".").toDouble)
-    println("Pop. Density total: " + rdd2.take(rdd.count().toInt).sum)
+    val popDensityDouble: RDD[Double] = popDensity.map(_.replace(",",".").toDouble)
+    println("Pop. Density total: " + popDensityDouble.sum)
   }
 
 }
